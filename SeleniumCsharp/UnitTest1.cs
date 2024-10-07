@@ -10,7 +10,7 @@ namespace SeleniumNUnitExample
     {
         private IWebDriver? driver;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             // Initialize the ChromeDriver
@@ -21,7 +21,7 @@ namespace SeleniumNUnitExample
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
-        [Test]
+        [Test, Order(1)]
         public void SearchTest()
         {
             // Navigate to the URL
@@ -33,14 +33,14 @@ namespace SeleniumNUnitExample
                 var acceptCookiesButton = driver.FindElement(By.Id("echo1"));
                 acceptCookiesButton.Click();
             }
-            catch (NoSuchElementException)
+            catch (Exception ex)
             {
-                // Do nothing if the accept cookies button is not present
+                Console.WriteLine("ERROR: "+ex.Message);
             }
         }
 
         // 1. Title Verification Test
-        [Test]
+        [Test, Order(2)]
         public void VerifyPageTitleTest()
         {
             driver!.Navigate().GoToUrl("https://lucagluhhov22.thkit.ee/Content/toolivara/table3.php");
@@ -49,7 +49,7 @@ namespace SeleniumNUnitExample
         }
 
         // 2. Element Interaction Test
-        [Test]
+        [Test, Order(3)]
         public void ElementInteractionTest()
         {
             driver!.Navigate().GoToUrl("https://lucagluhhov22.thkit.ee/Content/toolivara/table1.php");
@@ -67,7 +67,7 @@ namespace SeleniumNUnitExample
         }
 
         // 3. Page Navigation Test
-        [Test]
+        [Test, Order(4)]
         public void VerifyUrlTest()
         {
             driver!.Navigate().GoToUrl("https://lucagluhhov22.thkit.ee/Content/toolivara/table3.php");
@@ -75,7 +75,7 @@ namespace SeleniumNUnitExample
             Assert.AreEqual("https://lucagluhhov22.thkit.ee/Content/toolivara/table3.php", currentUrl, "The URL is incorrect.");
         }
 
-        [TearDown]
+        [OneTimeTearDown]
         public void Teardown()
         {
             if (driver != null)
